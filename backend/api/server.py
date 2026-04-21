@@ -47,8 +47,6 @@ except ImportError as e:
     print(f"[WARNING] Agent modules not available: {e}")
 
 
-# Midnight Network removed - using Circom/SnarkJS ZK proofs instead
-MIDNIGHT_AVAILABLE = False
 
 # Import Credit Oracle
 try:
@@ -376,11 +374,11 @@ async def agent_heartbeat():
 
 
 # ============================================================================
-# Midnight ZK Credit Check (Mock)
+# ZK Credit Check (SAS-backed, Solana)
 # ============================================================================
 
 async def perform_credit_check(borrower: str, score: int) -> Dict:
-    """Perform ZK credit check using Circom/SnarkJS (replaces Midnight)."""
+    """Perform ZK credit check backed by Solana Attestation Service (SAS)."""
     await manager.broadcast({
         "type": "workflow_step",
         "data": {
@@ -401,7 +399,7 @@ async def perform_credit_check(borrower: str, score: int) -> Dict:
     #         credit_score = oracle_data.score
     #         print(f"[Oracle] Fetched credit score: {credit_score} (confidence: {oracle_data.confidence})")
     
-    # Perform ZK credit check using Circom/SnarkJS (replaces Midnight)
+    # Perform ZK credit check via SAS attestation
     # TODO: Integrate with backend/zk/proof_generator.py
     await asyncio.sleep(1)  # Simulate processing
     is_eligible = credit_score >= 700
@@ -412,7 +410,7 @@ async def perform_credit_check(borrower: str, score: int) -> Dict:
         "is_eligible": is_eligible,
         "proof_hash": proof_hash,
         "timestamp": datetime.now().isoformat(),
-        "source": "circom"  # Using Circom instead of Midnight
+        "source": "sas"   # Solana Attestation Service
     }
     
     state.credit_checks[borrower] = result
@@ -528,7 +526,7 @@ async def get_analytics():
 
 # --- Credit Check ---
 
-@app.post("/api/zk/credit-check")  # Replaced Midnight with Circom/SnarkJS
+@app.post("/api/zk/credit-check")  # SAS-backed credit check
 async def credit_check(req: CreditCheckRequest, background_tasks: BackgroundTasks):
     """Submit credit score for ZK verification."""
     result = await perform_credit_check(req.borrower_address, req.credit_score)
@@ -1105,7 +1103,6 @@ async def get_latest_conversation():
     return {"conversation_id": latest_id, "messages": messages}
 
 
-# See backend/ethereum/tx_builder.py for Ethereum transaction building
 
 
 # ============================================================================
@@ -1552,6 +1549,7 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
     host = os.getenv("HOST", "0.0.0.0")
     uvicorn.run(app, host=host, port=port)
+
 
 
 

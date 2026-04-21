@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { ArrowRight, Coins } from "lucide-react";
 import { StablecoinLogo } from "@/lib/stablecoinLogos";
 
@@ -22,8 +22,8 @@ const mockAssets: Asset[] = [
   },
   {
     id: "2",
-    name: "Ethereum",
-    symbol: "ETH",
+    name: "Solana",
+    symbol: "SOL",
     apr: "5.2%",
     liquidity: "$8.7M",
     icon: "E",
@@ -115,3 +115,4 @@ export const AssetTable = () => {
     </motion.div>
   );
 };
+

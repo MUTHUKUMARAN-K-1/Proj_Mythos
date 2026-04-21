@@ -1,7 +1,7 @@
 ﻿/**
  * Mythos â€” Solana Wallet Stub
  *
- * This file replaces the legacy Ethereum wallet integration.
+ * This is a Solana wallet shim for the Mythos dashboard.
  * All real wallet connectivity is now handled by SolanaWalletProvider
  * (Phantom / @solana/wallet-adapter-react).
  *
@@ -75,4 +75,5 @@ export function debugWallet(): void {
   console.log('=== Mythos Solana Wallet Debug ===');
   console.log('Phantom available:', !!sol);
 }
+
 

@@ -1,9 +1,9 @@
-"""
-Mythos — Solana Attestation Service (SAS) Client
+﻿"""
+Mythos â€” Solana Attestation Service (SAS) Client
 =================================================
 Issues and verifies on-chain credit score attestations using the
 Solana Attestation Service (SAS). Replaces ZK proofs with native
-Solana attestations — lightweight, composable, and hackathon-highlighted.
+Solana attestations â€” lightweight, composable, and hackathon-highlighted.
 
 SAS Attestation Schema:
   - Schema: "mythos-credit-v1"
@@ -12,11 +12,11 @@ SAS Attestation Schema:
   - Expires: 30 days after issuance
 
 Attestation Tiers:
-  AAA: score 800+  → 7% APR, 150% LTV
-  AA:  score 750+  → 8% APR, 140% LTV
-  A:   score 700+  → 9.5% APR, 130% LTV
-  B:   score 650+  → 11% APR, 120% LTV
-  C:   score 600+  → 13% APR, 110% LTV
+  AAA: score 800+  â†’ 7% APR, 150% LTV
+  AA:  score 750+  â†’ 8% APR, 140% LTV
+  A:   score 700+  â†’ 9.5% APR, 130% LTV
+  B:   score 650+  â†’ 11% APR, 120% LTV
+  C:   score 600+  â†’ 13% APR, 110% LTV
 """
 
 import os
@@ -145,14 +145,14 @@ class SASClient:
             
         Returns: CreditAttestation with on-chain signature (demo or real)
         """
-        print(f"\n[SAS] 📋 Issuing credit attestation...")
+        print(f"\n[SAS] ðŸ“‹ Issuing credit attestation...")
         print(f"[SAS]    Borrower: {subject_pubkey[:20]}...")
         print(f"[SAS]    Score: {credit_score} (private, not stored on-chain)")
 
         tier = self._score_to_tier(credit_score)
         
         if tier == "INELIGIBLE":
-            print(f"[SAS] ❌ Score too low ({credit_score} < 600). No attestation issued.")
+            print(f"[SAS] âŒ Score too low ({credit_score} < 600). No attestation issued.")
             raise ValueError(f"Credit score {credit_score} does not qualify for any tier (minimum 600)")
 
         tier_config = CREDIT_TIERS[tier]
@@ -176,7 +176,7 @@ class SASClient:
 
             _attestations[subject_pubkey] = attestation
 
-            print(f"[SAS] ✅ Attestation issued!")
+            print(f"[SAS] âœ… Attestation issued!")
             print(f"[SAS]    Tier: {tier} | Rate: {tier_config['rate_bps']/100}% APR | LTV: {tier_config['ltv_bps']/100}%")
             print(f"[SAS]    Attestation ID: {attestation.attestation_id}")
             print(f"[SAS]    Expires: {attestation.expires_at[:10]}")
@@ -197,20 +197,20 @@ class SASClient:
             
         Returns: CreditAttestation if valid, None if missing/expired
         """
-        print(f"\n[SAS] 🔍 Verifying attestation for {subject_pubkey[:20]}...")
+        print(f"\n[SAS] ðŸ” Verifying attestation for {subject_pubkey[:20]}...")
 
         attestation = _attestations.get(subject_pubkey)
 
         if not attestation:
-            print(f"[SAS] ⚠️  No attestation found for this wallet")
+            print(f"[SAS] âš ï¸  No attestation found for this wallet")
             return None
 
         if attestation.is_expired:
-            print(f"[SAS] ⚠️  Attestation expired on {attestation.expires_at[:10]}")
+            print(f"[SAS] âš ï¸  Attestation expired on {attestation.expires_at[:10]}")
             del _attestations[subject_pubkey]
             return None
 
-        print(f"[SAS] ✅ Valid attestation found: Tier {attestation.credit_tier}")
+        print(f"[SAS] âœ… Valid attestation found: Tier {attestation.credit_tier}")
         return attestation
 
     async def get_loan_terms(
@@ -278,11 +278,11 @@ class SASClient:
         # 4. Submit to Solana
         
         # For now, mark as pending and return
-        attestation.tx_signature = "PENDING_REAL_SAS_TX"
+        attestation.tx_signature = "SAS_TX_PENDING_ANCHOR_INTEGRATION"
         attestation.on_chain = False
         _attestations[attestation.subject_pubkey] = attestation
         
-        print("[SAS] ℹ️  Real SAS instruction submission not yet implemented")
+        print("[SAS] â„¹ï¸  Real SAS instruction submission not yet implemented")
         print("[SAS]     Attestation stored locally as fallback")
         return attestation
 
@@ -327,8 +327,9 @@ async def get_or_create_attestation(
 def mock_credit_score_from_history(wallet_address: str) -> int:
     """
     Deterministic mock credit score based on wallet address.
-    For demo purposes — maps wallet to a repeatable credit score.
+    For demo purposes â€” maps wallet to a repeatable credit score.
     """
     score_seed = int(hashlib.sha256(wallet_address.encode()).hexdigest()[:4], 16)
     # Map to 600-820 range
     return 600 + (score_seed % 221)
+

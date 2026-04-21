@@ -1,16 +1,16 @@
-# Mythos — Deployment Guide (Legacy Docker Reference)
+﻿# Mythos â€” Deployment Guide (Legacy Docker Reference)
 
 > **This file is kept for reference. For the canonical deployment guide see [DEPLOY.md](../DEPLOY.md).**
 > Mythos runs on **Solana Devnet** using **Vercel** (frontend) and **Railway** (backend).
-> No Hydra, no Cardano, no Ethereum infrastructure required.
+> 100% Solana-native: Anchor program, Helius RPC, x402 micropayments, SAS attestations.
 
 ---
 
-## Quick Deploy (Canonical — see DEPLOY.md)
+## Quick Deploy (Canonical â€” see DEPLOY.md)
 
 | Layer | Platform | Command |
 |---|---|---|
-| Frontend | Vercel | Push to GitHub → import in Vercel dashboard |
+| Frontend | Vercel | Push to GitHub â†’ import in Vercel dashboard |
 | Backend | Railway | `railway up` |
 | Anchor Program | Solana Devnet | Already deployed (`FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM`) |
 
@@ -46,7 +46,7 @@ VITE_USDC_MINT=4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU
 
 ```bash
 curl https://your-railway-url.up.railway.app/health
-# → {"status":"ok","network":"devnet","program_id":"FGG8363..."}
+# â†’ {"status":"ok","network":"devnet","program_id":"FGG8363..."}
 ```
 
 ---
@@ -55,3 +55,4 @@ curl https://your-railway-url.up.railway.app/health
 
 Program ID: `FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM`
 Explorer: https://explorer.solana.com/address/FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM?cluster=devnet
+

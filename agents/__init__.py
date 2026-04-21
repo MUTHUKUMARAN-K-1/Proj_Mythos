@@ -1,26 +1,26 @@
-"""
-Mythos — Agents Module
+﻿"""
+Mythos â€” Agents Module
 AI-Native Agentic Lending on Solana
 
 Architecture:
-    User Request → Lenny (Borrower Agent)
+    User Request â†’ Lenny (Borrower Agent)
                     |
-              [reads SAS]  ← Solana Attestation Service (on-chain credit)
+              [reads SAS]  â† Solana Attestation Service (on-chain credit)
                     |
-              [pays x402]  ← HTTP 402 micropayment to Luna
+              [pays x402]  â† HTTP 402 micropayment to Luna
                     |
-              [negotiates] ← Luna (Lender Agent) — AI rate negotiation
+              [negotiates] â† Luna (Lender Agent) â€” AI rate negotiation
                     |
-              [signs Anchor tx] → Solana Devnet
+              [signs Anchor tx] â†’ Solana Devnet
                     |
-                Loan Disbursed! 🎉
+                Loan Disbursed! ðŸŽ‰
 
 Agents:
 - solana_borrower_agent (Lenny): Reads SAS, pays x402, negotiates, settles on Solana
 - solana_lender_agent  (Luna):  Prices risk, evaluates counter-offers, confirms loan
 """
 
-# Legacy Ethereum agents have been moved to archive/legacy/
+# Legacy non-Solana agents have been moved to archive/legacy/
 # Active Solana agents live at the module level
 try:
     from .solana_borrower_agent import (
@@ -38,7 +38,7 @@ except ImportError as e:
     warnings.warn(f"[Mythos] Solana agents not loaded: {e}")
 
 __all__ = [
-    # Borrower Agent — Lenny
+    # Borrower Agent â€” Lenny
     "run_solana_borrower_workflow",
     "create_solana_borrower_agent",
     "SolanaClient",
@@ -46,3 +46,4 @@ __all__ = [
     "LoanOffer",
     "SolanaLoanResult",
 ]
+
