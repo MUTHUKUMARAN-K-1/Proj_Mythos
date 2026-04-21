@@ -1,5 +1,13 @@
+﻿
+# =============================================================================
+# DEMO MODE NOTICE
+# When SOLANA_DEMO_MODE=true (default), x402 payment confirmation and Solana
+# transaction broadcast are simulated locally for hackathon demo purposes.
+# The Anchor program on Devnet (FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM)
+# is ALWAYS REAL. Set SOLANA_DEMO_MODE=false + real keys for full on-chain settlement.
+# =============================================================================
 """
-Mythos — FastAPI Backend Server
+Mythos â€” FastAPI Backend Server
 ================================
 AI-Native Agentic Lending Protocol on Solana
 
@@ -160,7 +168,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Mythos API",
-    description="AI-Native Agentic Lending Protocol on Solana — x402 · SAS · Helius · Jupiter",
+    description="AI-Native Agentic Lending Protocol on Solana â€” x402 Â· SAS Â· Helius Â· Jupiter",
     version="3.0.0",
     lifespan=lifespan
 )
@@ -179,7 +187,7 @@ try:
     from x402_middleware import x402_middleware, get_payment_stats, simulate_agent_payment
     X402_AVAILABLE = True
     app.middleware("http")(x402_middleware)
-    print("[x402] Payment gate middleware loaded ✅")
+    print("[x402] Payment gate middleware loaded âœ…")
 except ImportError as e:
     X402_AVAILABLE = False
     print(f"[x402] Not available: {e}")
@@ -187,7 +195,7 @@ except ImportError as e:
 try:
     from attestation import sas_client, get_or_create_attestation, mock_credit_score_from_history
     SAS_AVAILABLE = True
-    print("[SAS] Attestation client loaded ✅")
+    print("[SAS] Attestation client loaded âœ…")
 except ImportError as e:
     SAS_AVAILABLE = False
     print(f"[SAS] Not available: {e}")
@@ -195,7 +203,7 @@ except ImportError as e:
 try:
     from helius_client import helius_client, get_solana_network_stats
     HELIUS_AVAILABLE = True
-    print("[Helius] RPC client loaded ✅")
+    print("[Helius] RPC client loaded âœ…")
 except ImportError as e:
     HELIUS_AVAILABLE = False
     print(f"[Helius] Not available: {e}")
@@ -204,7 +212,7 @@ try:
     from agents.solana_borrower_agent import run_solana_borrower_workflow
     from agents.solana_lender_agent import handle_negotiation_request
     SOLANA_AGENTS_AVAILABLE = True
-    print("[SolanaAgents] Lenny + Luna loaded ✅")
+    print("[SolanaAgents] Lenny + Luna loaded âœ…")
 except ImportError as e:
     SOLANA_AGENTS_AVAILABLE = False
     print(f"[SolanaAgents] Not available: {e}")

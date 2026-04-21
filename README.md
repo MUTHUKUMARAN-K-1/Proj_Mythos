@@ -42,6 +42,52 @@ curl -X POST https://mythos-api.railway.app/api/solana/workflow/start \
 > No wallet needed — click **⚡ One-Click Demo** on the live app to watch Lenny × Luna negotiate a loan instantly.
 
 
+## ✅ What is Real on Devnet
+
+| Layer | Status | Detail |
+|---|---|---|
+| **Anchor Program** | ✅ Live | [FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM](https://explorer.solana.com/address/FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM?cluster=devnet) — BPFLoaderUpgradeable, executable |
+| **Deploy TX** | ✅ On-chain | [3twz9fk...↗](https://explorer.solana.com/tx/3twz9fkqZWktXGXukqGZqrwJLpY41A8iLmjyPN3TwWP4J4fobtUYNZPbshxkS6cdDqCAAT8t3xVFE8zw3y5TBrig?cluster=devnet) |
+| **Instructions** | ✅ Implemented | `initialize_loan` · `accept_loan` · `repay_loan` · `liquidate` · `update_attestation` |
+| **x402 Payments** | ⚡ Demo mode | Simulated by default. Set `X402_DEMO_MODE=false` + Helius key for real on-chain verification |
+| **SAS Attestations** | ⚡ Demo mode | SAS-compatible schema. Set `SAS_DEMO_MODE=false` for on-chain PDA submission |
+| **Jupiter Prices** | ✅ Live | `/api/solana/price/SOL` — real Jupiter Price API v6 |
+| **Helius Feed** | ✅ Live | Real Devnet slot numbers via Helius Enhanced RPC |
+
+### x402 Machine Payments
+Agents exchange HTTP 402 challenge/response micropayments when calling each other's AI services.
+Demo mode simulates payment confirmation locally. Real mode: `X402_DEMO_MODE=false` + valid `HELIUS_API_KEY` → Helius webhook confirms USDC transfer on-chain before releasing agent response.
+
+### SAS Credit Attestations
+Borrower credit scores use a SAS-compatible on-chain PDA schema (`[b"attestation", borrower_pubkey]`).
+Demo mode issues attestations locally. Real mode: `SAS_DEMO_MODE=false` submits to Solana Devnet PDA.
+
+---
+
+## 🧑‍⚖️ Judge Demo (2 minutes, no wallet required)
+
+```bash
+# Terminal 1 — Backend
+cp .env.example .env       # add HELIUS_API_KEY + GROQ_API_KEY
+pip install -r requirements.txt
+uvicorn backend.api.server:app --port 8000
+
+# Terminal 2 — Frontend
+cd frontend/Dashboard
+cp .env.example .env       # add VITE_HELIUS_API_KEY
+npm install && npm run dev
+```
+
+Then:
+1. Open `http://localhost:5173`
+2. Click **"⚡ Try Demo — No Wallet Needed"**
+3. Watch Lenny × Luna negotiate from **9.5% → ~7.5% APR** in real-time
+4. Check the **Jupiter price banner** (live SOL/USD)
+5. Check the **Helius activity feed** (real Devnet slot numbers)
+6. Verify the program: paste `FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM` into [Solana Explorer](https://explorer.solana.com/?cluster=devnet) → confirms executable, BPFLoader deployed
+
+---
+
 ## 🚀 What is Mythos?
 
 **Mythos** is an AI-native, agentic DeFi lending protocol built natively on Solana. It eliminates the human negotiation bottleneck in DeFi lending by deploying two autonomous AI agents:

@@ -60,7 +60,7 @@ pub mod mythos {
         loan.due_at = 0; // Set when loan is accepted
         loan.negotiation_rounds = 0;
         loan.bump = ctx.bumps.loan;
-        loan.vault_bump = ctx.bumps.collateral_vault;
+        // vault_bump not stored — CPI signs with loan PDA seeds (authority = loan)
 
         // Transfer collateral to vault
         let collateral_amount = ctx.accounts.borrower_collateral_account.amount;
@@ -154,8 +154,9 @@ pub mod mythos {
         let principal       = ctx.accounts.loan.amount_usdc;
         let rate_bps        = ctx.accounts.loan.final_rate_bps;
         let term_months     = ctx.accounts.loan.term_months;
-        let vault_bump_val  = ctx.accounts.loan.vault_bump;      // must be before &mut
-        let loan_acct_info  = ctx.accounts.loan.to_account_info(); // must be before &mut
+        // Sign with LOAN PDA seeds (vault authority = loan, not vault)
+        let loan_bump_val   = ctx.accounts.loan.bump;
+        let loan_acct_info  = ctx.accounts.loan.to_account_info(); // before &mut
 
         let loan = &mut ctx.accounts.loan;
         let clock = Clock::get()?;
@@ -178,9 +179,9 @@ pub mod mythos {
         );
         token::transfer(transfer_ctx, total_due)?;
 
-        // Release collateral — vault PDA signs using vault seeds
-        let vault_seeds = &[b"vault".as_ref(), borrower_key.as_ref(), &principal.to_le_bytes(), &[vault_bump_val]];
-        let signer = &[&vault_seeds[..]];
+        // Release collateral — authority is loan PDA, so sign with loan seeds
+        let loan_seeds = &[b"loan".as_ref(), borrower_key.as_ref(), &principal.to_le_bytes(), &[loan_bump_val]];
+        let signer = &[&loan_seeds[..]];
         let release_ctx = CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             Transfer {
@@ -218,8 +219,9 @@ pub mod mythos {
         let borrower_key    = ctx.accounts.loan.borrower;
         let lender_key      = ctx.accounts.loan.lender;
         let loan_principal  = ctx.accounts.loan.amount_usdc;
-        let vault_bump_val  = ctx.accounts.loan.vault_bump;       // must be before &mut
-        let loan_acct_info  = ctx.accounts.loan.to_account_info(); // must be before &mut
+        // Sign with LOAN PDA seeds (vault authority = loan, not vault)
+        let loan_bump_val   = ctx.accounts.loan.bump;
+        let loan_acct_info  = ctx.accounts.loan.to_account_info(); // before &mut
 
         let loan = &mut ctx.accounts.loan;
         let clock = Clock::get()?;
@@ -230,9 +232,9 @@ pub mod mythos {
         let is_undercollateralized = false; // Jupiter oracle check in production
         require!(is_overdue || is_undercollateralized, MythosError::NotLiquidatable);
 
-        // Seize collateral — vault PDA signs using vault seeds
-        let vault_seeds = &[b"vault".as_ref(), borrower_key.as_ref(), &loan_principal.to_le_bytes(), &[vault_bump_val]];
-        let signer = &[&vault_seeds[..]];
+        // Seize collateral — authority is loan PDA, so sign with loan seeds
+        let loan_seeds = &[b"loan".as_ref(), borrower_key.as_ref(), &loan_principal.to_le_bytes(), &[loan_bump_val]];
+        let signer = &[&loan_seeds[..]];
         let liquidate_ctx = CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             Transfer {
@@ -296,7 +298,6 @@ pub struct LoanAccount {
     pub due_at: i64,                // 8
     pub repaid_at: i64,             // 8
     pub bump: u8,                   // 1  — loan PDA bump
-    pub vault_bump: u8,             // 1  — collateral vault PDA bump (ADDED)
 }
 
 impl LoanAccount {
@@ -304,8 +305,8 @@ impl LoanAccount {
     // + initial_rate_bps(2) + final_rate_bps(2) + term_months(1)
     // + negotiation_rounds(1) + collateral_amount(8) + attestation_id(32)
     // + status(1+1) + created_at(8) + accepted_at(8) + due_at(8)
-    // + repaid_at(8) + bump(1) + vault_bump(1)
-    pub const LEN: usize = 8 + 32 + 32 + 8 + 2 + 2 + 1 + 1 + 8 + 32 + 2 + 8 + 8 + 8 + 8 + 1 + 1;
+    // + repaid_at(8) + bump(1)
+    pub const LEN: usize = 8 + 32 + 32 + 8 + 2 + 2 + 1 + 1 + 8 + 32 + 2 + 8 + 8 + 8 + 8 + 1;
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Default, PartialEq)]
@@ -395,12 +396,11 @@ pub struct RepayLoan<'info> {
     )]
     pub loan: Account<'info, LoanAccount>,
 
-    /// Vault seeds now match the init seeds (borrower + amount_usdc) and use
-    /// the stored vault_bump for the CPI signer.
+    /// Vault: seeds = [b"vault", borrower, amount_usdc]. Anchor re-derives bump.
     #[account(
         mut,
         seeds = [b"vault", loan.borrower.as_ref(), &loan.amount_usdc.to_le_bytes()],
-        bump = loan.vault_bump,
+        bump,
     )]
     pub collateral_vault: Account<'info, TokenAccount>,
 
@@ -427,10 +427,11 @@ pub struct Liquidate<'info> {
     )]
     pub loan: Account<'info, LoanAccount>,
 
+    /// Vault: seeds = [b"vault", borrower, amount_usdc]. Anchor re-derives bump.
     #[account(
         mut,
         seeds = [b"vault", loan.borrower.as_ref(), &loan.amount_usdc.to_le_bytes()],
-        bump = loan.vault_bump,
+        bump,
     )]
     pub collateral_vault: Account<'info, TokenAccount>,
 

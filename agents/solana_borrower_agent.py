@@ -1,5 +1,13 @@
+﻿
+# =============================================================================
+# DEMO MODE NOTICE
+# When SOLANA_DEMO_MODE=true (default), x402 payment confirmation and Solana
+# transaction broadcast are simulated locally for hackathon demo purposes.
+# The Anchor program on Devnet (FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM)
+# is ALWAYS REAL. Set SOLANA_DEMO_MODE=false + real keys for full on-chain settlement.
+# =============================================================================
 """
-Mythos — Solana-Native Borrower Agent (Lenny)
+Mythos â€” Solana-Native Borrower Agent (Lenny)
 =============================================
 Lenny is an autonomous AI agent that:
   1. Holds a Solana wallet (Keypair)
@@ -9,12 +17,12 @@ Lenny is an autonomous AI agent that:
   5. Broadcasts finalized transactions to Solana Devnet via Helius
 
 Architecture:
-  User Request → Lenny
-    → [pays x402] → Evaluation Service
-    → [reads SAS] → Credit Attestation Check
-    → [negotiates] → Luna (Lender Agent)
-    → [signs tx]  → Solana Devnet (Anchor Program)
-    → Loan Disbursed! 🎉
+  User Request â†’ Lenny
+    â†’ [pays x402] â†’ Evaluation Service
+    â†’ [reads SAS] â†’ Credit Attestation Check
+    â†’ [negotiates] â†’ Luna (Lender Agent)
+    â†’ [signs tx]  â†’ Solana Devnet (Anchor Program)
+    â†’ Loan Disbursed! ðŸŽ‰
 """
 
 import json
@@ -197,9 +205,9 @@ async def pay_x402(path: str, agent_name: str = "lenny") -> str:
         "amount_usdc": "0.001"
     }
     
-    print(f"[x402] 💸 {agent_name.capitalize()} paying 0.001 USDC for {path}...")
+    print(f"[x402] ðŸ’¸ {agent_name.capitalize()} paying 0.001 USDC for {path}...")
     encoded = base64.b64encode(json.dumps(payment_data).encode()).decode()
-    print(f"[x402] ✅ Payment {sim_sig[:20]}... confirmed")
+    print(f"[x402] âœ… Payment {sim_sig[:20]}... confirmed")
     return encoded
 
 
@@ -340,7 +348,7 @@ class NegotiateSolanaTool(BaseTool):
             rate = float(proposed_rate)
             
             # Simulate x402 payment + negotiation
-            print(f"[Lenny] 💸 Paying x402 fee to call Luna for negotiation...")
+            print(f"[Lenny] ðŸ’¸ Paying x402 fee to call Luna for negotiation...")
             time.sleep(0.2)  # Simulate payment
             
             # Simulate Luna's counter-offer logic
@@ -351,7 +359,7 @@ class NegotiateSolanaTool(BaseTool):
                 result = {
                     "action": "accepted",
                     "final_rate": round(rate, 2),
-                    "message": f"✅ Luna accepts {rate}%! Deal locked.",
+                    "message": f"âœ… Luna accepts {rate}%! Deal locked.",
                     "luna_message": f"Agreed. {rate}% for the specified term. Sending to chain.",
                     "ready_to_settle": True
                 }
@@ -361,7 +369,7 @@ class NegotiateSolanaTool(BaseTool):
                 result = {
                     "action": "counter",
                     "luna_counter": counter,
-                    "message": f"⚡ Luna counters with {counter}%. Minimum acceptable.",
+                    "message": f"âš¡ Luna counters with {counter}%. Minimum acceptable.",
                     "luna_message": f"Your rate is too aggressive. My floor is {counter}%.",
                     "ready_to_settle": False
                 }
@@ -371,7 +379,7 @@ class NegotiateSolanaTool(BaseTool):
                 result = {
                     "action": "counter",
                     "luna_counter": counter,
-                    "message": f"🤝 Luna meets halfway at {counter}%.",
+                    "message": f"ðŸ¤ Luna meets halfway at {counter}%.",
                     "luna_message": f"Let's meet in the middle: {counter}%.",
                     "ready_to_settle": False
                 }
@@ -395,7 +403,7 @@ class BroadcastSolanaTxTool(BaseTool):
         try:
             rate = float(final_rate)
             
-            print(f"\n[Lenny] 📡 Broadcasting to Solana Devnet...")
+            print(f"\n[Lenny] ðŸ“¡ Broadcasting to Solana Devnet...")
             
             # Run async broadcast in sync context
             loop = asyncio.new_event_loop()
@@ -416,7 +424,7 @@ class BroadcastSolanaTxTool(BaseTool):
                 sig = result["signature"]
                 explorer_url = result.get("explorer_url", f"https://explorer.solana.com/tx/{sig}?cluster=devnet")
                 
-                print(f"[Lenny] ✅ Transaction confirmed!")
+                print(f"[Lenny] âœ… Transaction confirmed!")
                 print(f"[Lenny]    Signature: {sig[:20]}...")
                 print(f"[Lenny]    Explorer: {explorer_url}")
                 
@@ -499,7 +507,7 @@ class JupiterPriceTool(BaseTool):
 # ============================================================================
 
 def get_llm():
-    """Get LLM instance — tries Groq first, then Ollama, then mock."""
+    """Get LLM instance â€” tries Groq first, then Ollama, then mock."""
     # Try Groq (fast, free tier)
     groq_key = os.getenv("GROQ_API_KEY")
     if groq_key:
@@ -537,7 +545,7 @@ def get_llm():
 
 def create_solana_borrower_agent() -> Agent:
     """
-    Create Lenny — the Solana-native autonomous borrower agent.
+    Create Lenny â€” the Solana-native autonomous borrower agent.
     
     Lenny can:
     - Read SAS credit attestations from Solana
@@ -605,8 +613,8 @@ async def run_solana_borrower_workflow(
         borrower_pubkey = LENNY_WALLET
 
     print("\n" + "=" * 70)
-    print("MYTHOS — SOLANA AI LENDING AGENT (Lenny)")
-    print("Agentic Commerce × x402 × Solana Attestation Service")
+    print("MYTHOS â€” SOLANA AI LENDING AGENT (Lenny)")
+    print("Agentic Commerce Ã— x402 Ã— Solana Attestation Service")
     print("=" * 70)
 
     results = {
@@ -617,7 +625,7 @@ async def run_solana_borrower_workflow(
     }
 
     # Step 1: SAS Credit Attestation
-    print("\n[Step 1] 📋 Checking SAS Credit Attestation...")
+    print("\n[Step 1] ðŸ“‹ Checking SAS Credit Attestation...")
     attestation = await get_attestation(borrower_pubkey, credit_score)
     results["attestation"] = {
         "tier": attestation.credit_tier,
@@ -629,13 +637,13 @@ async def run_solana_borrower_workflow(
     results["workflow_steps"].append({
         "step": 1,
         "name": "SAS Credit Attestation",
-        "status": "✅ Completed",
-        "details": f"Tier {attestation.credit_tier} — max ${attestation.max_loan_usdc:,.2f} USDC"
+        "status": "âœ… Completed",
+        "details": f"Tier {attestation.credit_tier} â€” max ${attestation.max_loan_usdc:,.2f} USDC"
     })
-    print(f"[Step 1] ✅ Tier {attestation.credit_tier} | Rate floor: {attestation.interest_rate_bps/100}% APR")
+    print(f"[Step 1] âœ… Tier {attestation.credit_tier} | Rate floor: {attestation.interest_rate_bps/100}% APR")
 
     # Step 2: Luna's Loan Offer
-    print("\n[Step 2] 🏦 Receiving loan offer from Luna (Lender Agent)...")
+    print("\n[Step 2] ðŸ¦ Receiving loan offer from Luna (Lender Agent)...")
     offer = LoanOffer(
         lender_pubkey="LunaLenderAgentXXXXXXXXXXXXXXXXXXXXXXXXX",
         principal_usdc=requested_amount_usdc,
@@ -646,24 +654,24 @@ async def run_solana_borrower_workflow(
     results["workflow_steps"].append({
         "step": 2,
         "name": "Luna's Loan Offer",
-        "status": "✅ Received",
+        "status": "âœ… Received",
         "details": f"${requested_amount_usdc}.00 USDC at {initial_rate_offered}% APR for {term_months} months"
     })
-    print(f"[Step 2] 💼 Offer: ${requested_amount_usdc} USDC @ {initial_rate_offered}% APR")
+    print(f"[Step 2] ðŸ’¼ Offer: ${requested_amount_usdc} USDC @ {initial_rate_offered}% APR")
 
     # Step 3: Pay x402 for evaluation
-    print("\n[Step 3] 💸 Paying x402 fee for AI evaluation service...")
+    print("\n[Step 3] ðŸ’¸ Paying x402 fee for AI evaluation service...")
     header = await pay_x402("/api/agent/evaluate", "lenny")
     results["x402_payments"] += 1
     results["workflow_steps"].append({
         "step": 3,
         "name": "x402 Payment",
-        "status": "✅ Paid",
+        "status": "âœ… Paid",
         "details": "0.001 USDC paid to access AI evaluation service"
     })
 
     # Step 4: AI-powered negotiation via CrewAI
-    print("\n[Step 4] 🤖 Starting AI negotiation (Lenny × Luna)...")
+    print("\n[Step 4] ðŸ¤– Starting AI negotiation (Lenny Ã— Luna)...")
     
     try:
         lenny = create_solana_borrower_agent()
@@ -701,7 +709,7 @@ async def run_solana_borrower_workflow(
         results["workflow_steps"].append({
             "step": 4,
             "name": "AI Negotiation (CrewAI)",
-            "status": "✅ Completed",
+            "status": "âœ… Completed",
             "details": "Lenny and Luna negotiated terms on Solana"
         })
         
@@ -713,12 +721,12 @@ async def run_solana_borrower_workflow(
         results["workflow_steps"].append({
             "step": 4,
             "name": "AI Negotiation (Simulated)",
-            "status": "✅ Completed",
-            "details": "Rate negotiated from 9.5% → 8.0% (saved 1.5%)"
+            "status": "âœ… Completed",
+            "details": "Rate negotiated from 9.5% â†’ 8.0% (saved 1.5%)"
         })
 
     # Step 5: Broadcast to Solana
-    print("\n[Step 5] 📡 Broadcasting loan to Solana Devnet...")
+    print("\n[Step 5] ðŸ“¡ Broadcasting loan to Solana Devnet...")
     final_rate = 8.0  # Compromise rate
     tx_result = await solana_client.broadcast_loan_tx(
         borrower=borrower_pubkey,
@@ -740,7 +748,7 @@ async def run_solana_borrower_workflow(
     results["workflow_steps"].append({
         "step": 5,
         "name": "Solana Transaction",
-        "status": "✅ Confirmed",
+        "status": "âœ… Confirmed",
         "details": f"TX: {results['solana_tx'][:20]}... | Explorer: {results['explorer_url']}"
     })
 
