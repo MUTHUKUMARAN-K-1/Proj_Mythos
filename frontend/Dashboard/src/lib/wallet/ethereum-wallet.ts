@@ -1,5 +1,5 @@
-/**
- * Mythos — Solana Wallet Stub
+﻿/**
+ * Mythos â€” Solana Wallet Stub
  *
  * This file replaces the legacy Ethereum wallet integration.
  * All real wallet connectivity is now handled by SolanaWalletProvider
@@ -19,9 +19,9 @@ export interface WalletState {
   balance: string | null;
   connected: boolean;
   walletName: WalletName | null;
-  /** @deprecated use connected — kept for backward compat with legacy hook */
+  /** @deprecated use connected â€” kept for backward compat with legacy hook */
   chainId: number | null;
-  /** @deprecated — Solana wallets don't have accounts array */
+  /** @deprecated â€” Solana wallets don't have accounts array */
   length: number;
 }
 
@@ -36,9 +36,9 @@ export function getInstalledWallets(): WalletInfo[] {
   const hasPhantom =
     typeof window !== 'undefined' && !!(window as Window & { solana?: { isPhantom?: boolean } }).solana?.isPhantom;
   return [
-    { name: 'phantom',  displayName: 'Phantom',  installed: hasPhantom, icon: '👻' },
-    { name: 'solflare', displayName: 'Solflare', installed: false,       icon: '🌟' },
-    { name: 'backpack', displayName: 'Backpack', installed: false,       icon: '🎒' },
+    { name: 'phantom',  displayName: 'Phantom',  installed: hasPhantom, icon: 'ðŸ‘»' },
+    { name: 'solflare', displayName: 'Solflare', installed: false,       icon: 'ðŸŒŸ' },
+    { name: 'backpack', displayName: 'Backpack', installed: false,       icon: 'ðŸŽ’' },
   ];
 }
 
@@ -52,7 +52,7 @@ export async function connectWallet(_name: WalletName = 'phantom'): Promise<Wall
 }
 
 export async function disconnectWallet(): Promise<void> {
-  // No-op — managed by Solana wallet adapter
+  // No-op â€” managed by Solana wallet adapter
 }
 
 /** Alias for backward compat with legacy useWallet.ts */
@@ -67,7 +67,7 @@ export function subscribeToWalletEvents(
   _onChain?: (chainId: string) => void,
   _onDisconnect?: () => void
 ): () => void {
-  return () => {}; // No-op — subscriptions managed by wallet adapter
+  return () => {}; // No-op â€” subscriptions managed by wallet adapter
 }
 
 export function debugWallet(): void {
@@ -75,3 +75,4 @@ export function debugWallet(): void {
   console.log('=== Mythos Solana Wallet Debug ===');
   console.log('Phantom available:', !!sol);
 }
+

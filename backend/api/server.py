@@ -1,4 +1,4 @@
-
+﻿
 # =============================================================================
 # DEMO MODE NOTICE
 # When SOLANA_DEMO_MODE=true (default), x402 payment confirmation and Solana
@@ -7,7 +7,7 @@
 # is ALWAYS REAL. Set SOLANA_DEMO_MODE=false + real keys for full on-chain settlement.
 # =============================================================================
 """
-Mythos ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â FastAPI Backend Server
+Mythos ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â FastAPI Backend Server
 ================================
 AI-Native Agentic Lending Protocol on Solana
 
@@ -160,7 +160,7 @@ async def lifespan(app: FastAPI):
     
 app = FastAPI(
     title="Mythos API",
-    description="AI-Native Agentic Lending Protocol on Solana ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â x402 Ãƒâ€šÃ‚Â· SAS Ãƒâ€šÃ‚Â· Helius Ãƒâ€šÃ‚Â· Jupiter",
+    description="AI-Native Agentic Lending Protocol on Solana ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â x402 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· SAS ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Helius ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Jupiter",
     version="3.0.0",
     lifespan=lifespan
 )
@@ -179,7 +179,7 @@ try:
     from x402_middleware import x402_middleware, get_payment_stats, simulate_agent_payment
     X402_AVAILABLE = True
     app.middleware("http")(x402_middleware)
-    print("[x402] Payment gate middleware loaded ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦")
+    print("[x402] Payment gate middleware loaded ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦")
 except ImportError as e:
     X402_AVAILABLE = False
     print(f"[x402] Not available: {e}")
@@ -187,7 +187,7 @@ except ImportError as e:
 try:
     from attestation import sas_client, get_or_create_attestation, mock_credit_score_from_history
     SAS_AVAILABLE = True
-    print("[SAS] Attestation client loaded ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦")
+    print("[SAS] Attestation client loaded ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦")
 except ImportError as e:
     SAS_AVAILABLE = False
     print(f"[SAS] Not available: {e}")
@@ -195,7 +195,7 @@ except ImportError as e:
 try:
     from helius_client import helius_client, get_solana_network_stats
     HELIUS_AVAILABLE = True
-    print("[Helius] RPC client loaded ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦")
+    print("[Helius] RPC client loaded ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦")
 except ImportError as e:
     HELIUS_AVAILABLE = False
     print(f"[Helius] Not available: {e}")
@@ -204,7 +204,7 @@ try:
     from agents.solana_borrower_agent import run_solana_borrower_workflow
     from agents.solana_lender_agent import handle_negotiation_request
     SOLANA_AGENTS_AVAILABLE = True
-    print("[SolanaAgents] Lenny + Luna loaded ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦")
+    print("[SolanaAgents] Lenny + Luna loaded ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦")
 except ImportError as e:
     SOLANA_AGENTS_AVAILABLE = False
     print(f"[SolanaAgents] Not available: {e}")
@@ -437,7 +437,7 @@ async def perform_credit_check(borrower: str, score: int) -> Dict:
 
 
 # ============================================================================
-# Legacy negotiation engine removed (Hydra/Cardano/PyCardano).
+# Legacy negotiation engine removed — Solana Anchor program handles on-chain settlement.
 # Loan lifecycle is now handled by the Mythos Anchor program on Solana.
 # See programs/mythos/src/lib.rs for on-chain instructions.
 # ============================================================================
@@ -448,7 +448,7 @@ async def perform_credit_check(borrower: str, score: int) -> Dict:
 @app.get("/")
 async def root():
     return {
-        "message": "Mythos Ã¢â‚¬â€ AI-Native Agentic Lending on Solana",
+        "message": "Mythos ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â AI-Native Agentic Lending on Solana",
         "version": "1.0.0",
         "program_id": "FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM",
         "docs": "/docs",
@@ -460,7 +460,7 @@ async def root():
 async def health():
     return {
         "status": "ok",
-        "service": "Mythos Ã¢â‚¬â€ AI-Native Agentic Lending on Solana",
+        "service": "Mythos ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â AI-Native Agentic Lending on Solana",
         "timestamp": datetime.now().isoformat(),
         "network": os.getenv("SOLANA_NETWORK", "devnet"),
         "program_id": os.getenv("MYTHOS_PROGRAM_ID", "FGG8363rUtdVernzHtXr4AD9PS9m4BezgAN8MJKcybpM"),
@@ -614,8 +614,7 @@ async def run_agent_negotiation(
                 "reasoning": reasoning
             })
 
-                        # Ethereum blockchain analysis can be added here if needed
-
+                        
             # Broadcast conversation update
             await manager.broadcast({
                 "type": "conversation_update",
@@ -779,7 +778,7 @@ async def start_workflow(req: WorkflowRequest, background_tasks: BackgroundTasks
             }
         })
         
-        # Step 3: SAS credit check â€” handled by Solana agent in run_solana_borrower_workflow
+        # Step 3: SAS credit check Ã¢â‚¬â€ handled by Solana agent in run_solana_borrower_workflow
         state.current_negotiation = {
             "head_id": f"sol_{int(datetime.now().timestamp())}",
             "borrower": req.borrower_address,
@@ -1553,6 +1552,7 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
     host = os.getenv("HOST", "0.0.0.0")
     uvicorn.run(app, host=host, port=port)
+
 
 
 

@@ -238,7 +238,7 @@ export function WalletConnectionWizard({ onConnect, role }: WalletConnectionWiza
                                     Continue
                                 </Button>
                                 <p className="text-xs text-muted-foreground">
-                                    Enter your Ethereum address to continue
+                                    Enter your Solana wallet address to continue
                                 </p>
                             </div>
                         )}
@@ -308,5 +308,6 @@ export function WalletConnectionWizard({ onConnect, role }: WalletConnectionWiza
         </div>
     );
 }
+
 
 

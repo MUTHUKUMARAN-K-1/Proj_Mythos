@@ -21,9 +21,9 @@ export function sanitizeString(input: string): string {
 }
 
 /**
- * Validate wallet address format (Ethereum-compatible — kept as utility)
+ * Validate wallet address format (base58/hex)
  */
-export function validateEthereumAddress(address: string): boolean {
+export function validateWalletAddress(address: string): boolean {
   if (!address || typeof address !== 'string') {
     return false;
   }
@@ -40,12 +40,12 @@ export function validateEthereumAddress(address: string): boolean {
     return false;
   }
   
-  // Ethereum address validation
+  // Legacy hex address validation (not used for Solana base58)
   // Must start with 0x and be 42 characters (including 0x prefix)
   // Followed by 40 hexadecimal characters
-  const ethereumPattern = /^0x[a-fA-F0-9]{40}$/;
+  const hexPattern = /^0x[a-fA-F0-9]{40}$/;
   
-  return ethereumPattern.test(trimmed);
+  return hexPattern.test(trimmed);
 }
 
 /**
@@ -137,7 +137,7 @@ export function validateLoanFormData(data: Partial<LoanFormData>): {
   
   if (walletAddr && walletAddr.length > 0) {
     // Only validate if an address is actually provided
-    if (!validateEthereumAddress(walletAddr)) {
+    if (!validateWalletAddress(walletAddr)) {
       errors.push('Invalid wallet address format. Must start with 0x and be 42 characters');
     } else {
       sanitized.walletAddress = sanitizeString(walletAddr);
@@ -200,4 +200,6 @@ export function validateLoanFormData(data: Partial<LoanFormData>): {
   
   return { valid: true, data: sanitized as LoanFormData, errors: [] };
 }
+
+
 

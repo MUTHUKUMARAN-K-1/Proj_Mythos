@@ -233,7 +233,7 @@ export function WalletConnection({ onAddressChange, defaultAddress }: WalletConn
                                         className="font-mono text-sm"
                                     />
                                     <p className="text-xs text-muted-foreground mt-1">
-                                        Enter your Ethereum address to use without wallet connection
+                                        Enter your Solana address to use without wallet connection
                                     </p>
                                 </motion.div>
                             )}
@@ -293,5 +293,6 @@ export function WalletConnection({ onAddressChange, defaultAddress }: WalletConn
         </Card>
     );
 }
+
 
 

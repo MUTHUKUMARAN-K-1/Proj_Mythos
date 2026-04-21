@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Simplified Loan Configuration Form
  * Clean, minimal form for loan parameters
  */
@@ -150,7 +150,7 @@ export function LoanConfigurationForm({ role, walletAddress, onSubmit }: LoanCon
                     required
                 />
                 <p className="text-xs text-muted-foreground">
-                    Ethereum address of the {role === 'borrower' ? 'lender' : 'borrower'}
+                    Solana address of the {role === 'borrower' ? 'lender' : 'borrower'}
                 </p>
             </div>
 
@@ -205,3 +205,4 @@ export function LoanConfigurationForm({ role, walletAddress, onSubmit }: LoanCon
         </form>
     );
 }
+
