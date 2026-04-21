@@ -22,3 +22,6 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Cargo off-source verify dirs
+target_verify/
